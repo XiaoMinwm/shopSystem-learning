@@ -38,6 +38,11 @@ public class ContentCategoryController {
 	public TaotaoResult deleteContentCat(Long parentId, Long id) {
 		TaotaoResult deleteContentCat = contentCategoryService.deleteContentCat(parentId, id);
 		return deleteContentCat;
-		
+	}
+	@RequestMapping("/update")
+	@ResponseBody
+	public TaotaoResult updateContentCat(long id, String name) {
+		TaotaoResult updateContentCat = contentCategoryService.updateContentCat(id, name);
+		return updateContentCat;
 	}
 }

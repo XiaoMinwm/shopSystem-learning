@@ -59,11 +59,22 @@ public class ContentCategoryServiceImpl implements ContentCategoryService {
 	@Override
 	public TaotaoResult deleteContentCat(long parentId, long id) {
 		contentCategoryMapper.deleteByPrimaryKey(id);
+		TbContentCategoryExample example = new TbContentCategoryExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andParentIdEqualTo(parentId);
+		List<TbContentCategory> parentCatList = contentCategoryMapper.selectByExample(example);
 		TbContentCategory parentCat = contentCategoryMapper.selectByPrimaryKey(parentId);
-		if(!parentCat.getIsParent()) {
+		if(parentCatList == null || parentCatList.size() == 0) {
 			parentCat.setIsParent(false);
 			contentCategoryMapper.updateByPrimaryKey(parentCat);
 		}
+		return TaotaoResult.ok();
+	}
+	@Override
+	public TaotaoResult updateContentCat(long id, String name) {
+		TbContentCategory contentCategory = contentCategoryMapper.selectByPrimaryKey(id);
+		contentCategory.setName(name);
+		contentCategoryMapper.updateByPrimaryKey(contentCategory);
 		return TaotaoResult.ok();
 	}
 
