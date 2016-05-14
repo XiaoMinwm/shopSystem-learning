@@ -5,66 +5,56 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.taotao.rest.dao.JedisClient;
 
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisCluster;
+
 
 public class JedisClientCluster implements JedisClient {
 	@Autowired
-	private JedisPool jedisPool;
+	private JedisCluster jedisCluster;
 
 	@Override
 	public String get(String key) {
-		Jedis jedis = jedisPool.getResource();
-		String string = jedis.get(key);
-		jedis.close();
-		return string;
+		return jedisCluster.get(key);
 	}
 
 	@Override
 	public String set(String key, String value) {
-		Jedis jedis = jedisPool.getResource();
-		String string = jedis.set(key, value);
-		jedis.close();
-		return string;
+		return jedisCluster.set(key, value);
 	}
 
 	@Override
 	public String hget(String hkey, String key) {
-		Jedis jedis = jedisPool.getResource();
-		String string = jedis.hget(hkey, key);
-		jedis.close();
-		return string;
+		return jedisCluster.hget(hkey, key);
 	}
 
 	@Override
 	public long hset(String hkey, String key, String value) {
-		Jedis jedis = jedisPool.getResource();
-		Long result = jedis.hset(hkey, key, value);
-		jedis.close();
-		return result;
+		return jedisCluster.hset(hkey, key, value);
 	}
 
 	@Override
 	public long incr(String key) {
-		Jedis jedis = jedisPool.getResource();
-		Long result = jedis.incr(key);
-		jedis.close();
-		return result;
+		return jedisCluster.incr(key);
 	}
 
 	@Override
 	public long expire(String key, int second) {
-		Jedis jedis = jedisPool.getResource();
-		Long result = jedis.expire(key, second);
-		jedis.close();
-		return result;
+		return jedisCluster.expire(key, second);
 	}
 
 	@Override
 	public long ttl(String key) {
-		Jedis jedis = jedisPool.getResource();
-		Long result = jedis.ttl(key);
-		jedis.close();
-		return result;
+		return jedisCluster.ttl(key);
+	}
+
+	@Override
+	public long del(String key) {
+		return jedisCluster.del(key);
+	}
+
+	@Override
+	public long hdel(String hkey, String key) {
+		return jedisCluster.hdel(hkey, key);
 	}
 
 }
